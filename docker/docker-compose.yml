@@ -1,0 +1,46 @@
+services:
+  qsoy2_api:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "5004:5002"
+    volumes:
+      - ../data:/app/data
+      - ../logs:/app/logs
+      - ../data/extracted:/app/extra_source:ro
+      - ../app:/app/app
+      - ../frontend:/app/frontend
+    environment:
+      - CLICKHOUSE_HOST=172.22.0.3
+      - CLICKHOUSE_PORT=8123
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-changeme_local}
+      - CLICKHOUSE_DATABASE=qsoy
+      - DATABASE_URL=sqlite:///data/votantes_csv.db
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - clickhouse  # espera a que ClickHouse esté listo
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: qsoy2_clickhouse
+    ports:
+      - "8123:8123"   # HTTP
+      - "9000:9000"   # Native protocol (para clickhouse-client)
+    volumes:
+      - ./data/clickhouse:/var/lib/clickhouse
+      - ./docker/clickhouse_config:/etc/clickhouse-server/config.d  # opcional para config
+    environment:
+      - CLICKHOUSE_HOST=172.22.0.3
+      - CLICKHOUSE_PORT=8123
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-changeme_local}
+      - CLICKHOUSE_DATABASE=qsoy
+    restart: unless-stopped
+    command: -- --listen_host=0.0.0.0
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
