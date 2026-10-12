@@ -29,3 +29,9 @@ Judicial Nacional: 21,398,987 registros · PREP 2024: 516,257 casillas (52.7M vo
 Solo CÓDIGO en este repo. Cero datos reales, cero credenciales.
 El generador produce identidades sintéticas sin correspondencia con
 personas reales. Fuentes públicas oficiales trazadas con SHA-256.
+
+## SEGURIDAD (12-oct-2026)
+Credenciales NUNCA en el repo: variable de entorno CH_PASS (scripts) o
+CLICKHOUSE_PASSWORD (compose, ver .env local). La credencial historica
+expuesta aqui fue ROTADA y esta MUERTA desde 12-oct (verificado: login
+rechazado). Historial git la conserva pero inutilizada.
