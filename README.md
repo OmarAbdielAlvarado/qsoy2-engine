@@ -1,3 +1,4 @@
+<!-- CANARIO CGDL7062 | nacido 2026-10-13 | repo OmarAbdielAlvarado/qsoy2-engine -->
 # qsoy2-engine — Motor de analítica electoral (ClickHouse)
 Columnar analytics en hardware de consumo. 100% local, sin nube.
 
